@@ -1,13 +1,40 @@
-import { AlertTriangle } from "lucide-react";
-import LogoRDS from "@/public/rds.png"
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { db } from "@/lib/firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 export default function Home() {
+  const [email, setEmail] = useState("");
+
+  // 💾 salvar email
+  const salvarEmail = async () => {
+    if (!email) return;
+
+    await addDoc(collection(db, "emails"), {
+      email,
+      createdAt: new Date(),
+    });
+
+    setEmail("");
+  };
+
   return (
-    <div className="w-full h-screen flex items-center justify-center bg-amber-50 gap-10">
-      <AlertTriangle size={100} color="red" />
-      <h1 className="text-3xl text-blue-600 w-96"><strong>Atenção</strong>, Você acaba de cair num golpe de estelionato do grupo Conclave!!</h1>
-      <Image src={LogoRDS} alt="RDS" />
-    </div>
+    <form action="/acesso" className="w-full min-h-screen flex flex-col items-center justify-center gap-4 bg-white">
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Digite seu e-mail"
+        className="border p-2 rounded text-black"
+      />
+
+      <button
+        onClick={salvarEmail}
+        className="bg-blue-600 px-4 py-2 rounded"
+      >
+        Entrar
+      </button>
+    </form>
   );
 }
