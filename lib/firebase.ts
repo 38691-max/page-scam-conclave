@@ -11,4 +11,4 @@ const app = initializeApp({
   measurementId: "G-DM41Q42DX4"
 });
 
-export const db = getFirestore(app);
+export const db = getFirestore(app, "emails");
