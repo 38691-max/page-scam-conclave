@@ -1,52 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { db } from "@/lib/firebase";
-import { collection, addDoc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import LogoRDS from "@/public/rds.png";
+import { AlertTriangle } from "lucide-react";
 
 export default function Home() {
-  const [email, setEmail] = useState("");
-  const router = useRouter();
-
-  const salvarEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!email) return;
-
-    try {
-      await addDoc(collection(db, "emails"), {
-        email,
-        createdAt: new Date(),
-      });
-
-      setEmail("");
-
-      router.push("/acesso");
-    } catch (error) {
-      console.error("Erro ao salvar email:", error);
-    }
-  };
-
   return (
-    <form
-      onSubmit={salvarEmail}
-      className="w-full min-h-screen flex flex-col items-center justify-center gap-4 bg-white"
-    >
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Digite seu e-mail"
-        className="border p-2 rounded text-black"
-      />
+    <div className="w-full h-screen justify-center items-center flex flex-col bg-amber-50">
+      <div className="w-full min-h-max flex flex-col md:flex-row items-center justify-center gap-10 p-4">
 
-      <button
-        type="submit"
-        className="bg-blue-600 px-4 py-2 rounded text-white"
-      >
-        Entrar
-      </button>
-    </form>
+        <AlertTriangle size={100} color="red" />
+
+        <h1 className="text-xl md:text-2xl lg:text-3xl text-blue-600 text-center md:text-left max-w-md">
+          <strong>Atenção</strong>, Você acaba de cair num golpe de estelionato do grupo Conclave!!
+        </h1>
+
+        <Image
+          src={LogoRDS}
+          alt="RDS"
+          className="w-40 md:w-56 h-auto"
+        />
+      </div>
+    </div>
   );
 }
